@@ -1,3 +1,6 @@
+$violet: #8f073f
+$purple: #581b45
+
 @keyframes tilt
   0%
     color: white
@@ -16,16 +19,35 @@
 .titles
   text-align: center
   margin: auto
+  position: relative
 
 .name
   text-transform: uppercase
   font-weight: 200
   color: white
 
-.title
+h1
   font-weight: 900
   font-size: 6em
   color: white
+  
+  position: relative
+  z-index: 99
+
+h1:after
+  content: attr(data-text)
+  position: absolute
+  top: .1em
+  left: 52%
+  transform: translateX(-50%);
+  z-index: -1
+  text-shadow: none
+  background-image: linear-gradient(45deg, transparent 45%, $violet 45%, $violet 55%, transparent 0)
+  background-size: .09em .09em
+  -webkit-background-clip: text
+  background-clip: text
+  -webkit-text-fill-color: transparent
+  text-fill-color: transparent
 
 .scroll-down-button
   display: grid
