@@ -21,16 +21,19 @@ export class SlideComponent implements OnInit {
   public onWheelEvent(event: Event) {
     event.preventDefault();
     var wheel = event.deltaY;
-
+    var offset: Number = 0;
+    var index: Number = 0;
 
     if(wheel > 0) {
       this.scroll("down");
-      this.menuActive(Math.min(window.pageYOffset + window.innerHeight, document.body.offsetHeight - window.innerHeight));
+      offset = Math.min(window.pageYOffset + window.innerHeight, document.body.offsetHeight - window.innerHeight);
     } else {
       this.scroll("up");
-      this.menuActive(Math.max(window.pageYOffset - window.innerHeight, 0));
+      offset = Math.max(window.pageYOffset - window.innerHeight, 0);
     }
 
+    index = parseInt(offset / window.innerHeight);
+    this.menuActive(index);
   }
 
   /**
@@ -40,25 +43,26 @@ export class SlideComponent implements OnInit {
   @HostListener('window:keydown', ['$event'])
   public onKeyEvent(event: Event) {
     event.preventDefault();
+    var offset: Number = 0;
+    var index: Number = 0;
 
     if(event.key === "ArrowDown") {
       this.scroll("down");
-      this.menuActive(Math.min(window.pageYOffset + window.innerHeight, document.body.offsetHeight - window.innerHeight));
+      offset = Math.min(window.pageYOffset + window.innerHeight, document.body.offsetHeight - window.innerHeight);
     } else if(event.key === "ArrowUp") {
       this.scroll("up");
-      this.menuActive(Math.max(window.pageYOffset - window.innerHeight, 0));
+      offset = Math.max(window.pageYOffset - window.innerHeight, 0);
     }
 
-    this.menuActive();
+    index = parseInt(offset / window.innerHeight);
+    this.menuActive(index);
   }
 
   /**
    * Sets the active li element
    */
-  private menuActive(offset: Number) {
+  private menuActive(index: Number) {
     var menu = document.getElementById("menu").getElementsByTagName("li");
-    var size = window.innerHeight;
-    var index: Number = parseInt(offset / size);
 
     for(let m of menu) {
       m.classList.remove('active');
@@ -89,5 +93,15 @@ export class SlideComponent implements OnInit {
         behavior: "smooth"
       });
     }
+  }
+
+  public onScroll(index: Number) {
+    var size = window.innerHeight;
+    window.scrollTo({
+      top: size * index,
+      behavior: "smooth"
+    });
+
+    this.menuActive(index);
   }
 }

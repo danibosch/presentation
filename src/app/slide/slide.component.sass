@@ -17,6 +17,7 @@ $orange: #ff5738
     margin: auto
   li
     margin: 10px 0
+    cursor: pointer
     a
       color: gray
       &:hover
@@ -24,5 +25,7 @@ $orange: #ff5738
 
 .active
   background-color: $violet
-  a
-    color: white
+  transition: background-color 0.2s ease-in
+
+main
+  transition: all 0.5s ease-in

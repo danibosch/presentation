@@ -1,9 +1,18 @@
 <!-- Menu -->
 <nav class="menu">
   <ul id="menu">
-    <li class="active"><a href="#">Welcome</a></li>
-    <li><a href="#">Developer</a></li>
-    <li><a href="#">Contact</a></li>
+    <li class="active">
+      <a (click)="onScroll(0)">Welcome</a>
+    </li>
+    <li>
+      <a (click)="onScroll(1)">Developer</a>
+    </li>
+    <li>
+      <a (click)="onScroll(2)">Designer</a>
+    </li>
+    <li>
+      <a (click)="onScroll(3)">Contact</a>
+    </li>
   </ul>
 </nav>
 
@@ -11,5 +20,6 @@
 <main>
   <app-welcome></app-welcome>
   <app-web-developer></app-web-developer>
+  <app-designer></app-designer>
   <app-contact></app-contact>
 </main>
