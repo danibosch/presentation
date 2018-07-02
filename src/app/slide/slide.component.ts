@@ -10,58 +10,41 @@ export class SlideComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.scroll("up");
+    this.onScroll(0);
   }
 
   /**
-   * Mouse Wheel event listener.
+   * Mouse Wheel and key press event listener.
    * @param event: Event
    */
   @HostListener('window:wheel', ['$event'])
-  public onWheelEvent(event: Event) {
-    event.preventDefault();
-    var wheel = event.deltaY;
-    var offset: Number = 0;
-    var index: Number = 0;
-
-    if(wheel > 0) {
-      this.scroll("down");
-      offset = Math.min(window.pageYOffset + window.innerHeight, document.body.offsetHeight - window.innerHeight);
-    } else {
-      this.scroll("up");
-      offset = Math.max(window.pageYOffset - window.innerHeight, 0);
-    }
-
-    index = parseInt(offset / window.innerHeight);
-    this.menuActive(index);
-  }
-
-  /**
-   * Key Press event listener.
-   * @param event: Event
-   */
   @HostListener('window:keydown', ['$event'])
-  public onKeyEvent(event: Event) {
+  public onScrollEvent(event: Event) {
     event.preventDefault();
-    var offset: Number = 0;
-    var index: Number = 0;
+    var offset: number = 0;
+    var index: number = 0;
 
-    if(event.key === "ArrowDown") {
-      this.scroll("down");
-      offset = Math.min(window.pageYOffset + window.innerHeight, document.body.offsetHeight - window.innerHeight);
-    } else if(event.key === "ArrowUp") {
-      this.scroll("up");
+    if((<any>event).deltaY > 0 || (<any>event).key === "ArrowDown") {
+      offset = Math.min(window.pageYOffset + window.innerHeight, document.body.offsetHeight);
+    } else if((<any>event).deltaY < 0 || (<any>event).key === "ArrowUp") {
       offset = Math.max(window.pageYOffset - window.innerHeight, 0);
     }
 
-    index = parseInt(offset / window.innerHeight);
+    index = Math.floor(offset / window.innerHeight);
+    console.log(window.innerHeight);
+    console.log(window.pageYOffset);
+    console.log(screen.height);
+    console.log(index);
+    console.log("===========");
+    this.onScroll(index);
     this.menuActive(index);
   }
 
   /**
    * Sets the active li element
+   * @param index: Number
    */
-  private menuActive(index: Number) {
+  private menuActive(index: number) {
     var menu = document.getElementById("menu").getElementsByTagName("li");
 
     for(let m of menu) {
@@ -73,29 +56,9 @@ export class SlideComponent implements OnInit {
 
   /**
    * Scrolls full page.
-   * @param direction: String. Indicates the scrolling direction 
+   * @param index: number. 
    */
-  private scroll(direction: String) {
-    var offset = window.pageYOffset;
-    var size = window.innerHeight;
-
-    // prevent bad offset triggered by multiple event
-    var mod_offset = offset - (offset % size);
-
-    if(direction === "down") {
-      window.scrollTo({
-        top: mod_offset + size,
-        behavior: "smooth"
-      });
-    } else if(direction === "up") {
-      window.scrollTo({
-        top: mod_offset - size,
-        behavior: "smooth"
-      });
-    }
-  }
-
-  public onScroll(index: Number) {
+  public onScroll(index: number) {
     var size = window.innerHeight;
     window.scrollTo({
       top: size * index,
