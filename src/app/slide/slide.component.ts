@@ -25,30 +25,30 @@ export class SlideComponent implements OnInit {
     var index: number = 0;
 
     if((<any>event).deltaY > 0 || (<any>event).key === "ArrowDown") {
+      // Scroll Down or Key Press ↓
       offset = Math.min(window.pageYOffset + window.innerHeight, document.body.offsetHeight);
     } else if((<any>event).deltaY < 0 || (<any>event).key === "ArrowUp") {
+      // Scroll Up or Key Press ↑
       offset = Math.max(window.pageYOffset - window.innerHeight, 0);
+    } else {
+      // Another Key Press
+      return;
     }
 
     index = Math.floor(offset / window.innerHeight);
-    console.log(window.innerHeight);
-    console.log(window.pageYOffset);
-    console.log(screen.height);
-    console.log(index);
-    console.log("===========");
     this.onScroll(index);
     this.menuActive(index);
   }
 
   /**
-   * Sets the active li element
+   * Sets the active li element of menu
    * @param index: Number
    */
   private menuActive(index: number) {
     var menu = document.getElementById("menu").getElementsByTagName("li");
 
-    for(let m of menu) {
-      m.classList.remove('active');
+    for(let i = 0; i < menu.length; i++) {
+      menu[i].classList.remove('active');
     }
 
     menu[index].classList.add('active');
